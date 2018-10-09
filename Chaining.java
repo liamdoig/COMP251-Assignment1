@@ -29,7 +29,7 @@ public class Chaining {
      */
     public int chain(int key) {
         //ADD YOUR CODE HERE (change return statement)
-    	int hashValue = ((this.A * key) % power2(w)) >> (w-r);
+    	int hashValue = ((this.A * key) % power2(this.w)) >> (this.w-this.r);
         
         return hashValue;
     }
@@ -49,10 +49,10 @@ public class Chaining {
         //ADD YOUR CODE HERE (change return statement)
     	int numCollisions = 0; 
     	
+    	//TODO: disallow the ability to insert a duplicate key into the table
     	int hashValue = chain(key);
     	boolean isEmpt = isSlotEmpty(hashValue);
     	
-    	//TODO: Account for the case in which the table is full 
     	if (isEmpt){
     		Table.get(hashValue).add(key);
     	} else { 

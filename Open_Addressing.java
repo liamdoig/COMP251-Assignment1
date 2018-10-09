@@ -30,7 +30,7 @@ public class Open_Addressing {
      */
     public int probe(int key, int i) {
         //ADD YOUR CODE HERE (CHANGE THE RETURN STATEMENT)
-    	int hashValue = ((((this.A * key) % power2(w)) >> (w-r)) + i) % power2(r);
+    	int hashValue = ((((this.A * key) % power2(this.w)) >> (this.w-this.r)) + i) % power2(this.r);
     	
         return hashValue;
     }
@@ -48,19 +48,33 @@ public class Open_Addressing {
      */
     public int insertKey(int key) {
         //ADD YOUR CODE HERE (CHANGE THE RETURN STATEMENT)
-    	int i = 0; 							// the number of collisions 
+    	int i = 0; 							// the number of collisions and 'i' is initialized for probe function
     	
     	int hashValue = probe(key, i); 	
     	int ogHashValue = hashValue;
-    	//TODO: what if there are no empty slots in the table? Then we are in an infinite loop... And that is BAD. i.e.) Table is full 
-    	while (!isSlotEmpty(hashValue)) {	//check slot is empty, 
+    	boolean tableFull = false;
+    	
+    	//TODO: disallow the ability to insert duplicate keys into the table 
+    	while (!isSlotEmpty(hashValue)) {	// check slot is empty, 
     		i++;							// if it isn't, then increment i by 1
     		hashValue = probe(key, i);		// and get a new HashValue 
-    		if (hashValue == ogHashValue) { // if the hashValue = to the Original Hash Value then we have gone through the whole table, 
-    			break;						//so break out of loop
+    		
+    		if (i >= m) {
+    			tableFull = true;
+    			break;
     		}
+    		/*
+    		if (hashValue == ogHashValue) { // if the hashValue = to the Original Hash Value then we have gone through the whole table, 
+    			tableFull = true;			// so the table is full
+    			break;						// so break out of loop
+    		}
+    		*/
     	}
-    	Table[hashValue] = key; 			//insert key into table with index hashValue
+    	if (!tableFull) { 					// if table had space, then insert, else do not insert
+        	Table[hashValue] = key; 		// insert key into table with index hashValue
+    	} else {
+    		return m;
+    	}
 
         return i;							// return i as it equals the number of collisions 
     }
@@ -76,23 +90,30 @@ public class Open_Addressing {
     	int hashValue = probe(key, i); 		// get the original hashValue
     	int ogHashValue = hashValue;		// copy of the original hashValue 
     	boolean keyExists = true;
-    	
-    	//TODO: account for edge case of key not being in hash table, so we do not want to make any changes, and return the number of slots visited
+    
     	while (Table[hashValue] != key) {	// check if the key at Table[hashValue] is the right key we want to delete
     		i++;							// if it isn't, then increment i by 1
     		hashValue = probe(key, i);		// and get a new HashValue to try again!  
     		
+    		if (i >= m) {
+    			keyExists = false;
+    			break;
+    		}
+    		/*
     		if (hashValue == ogHashValue) { // if current hashValue == ogHashValue then break out of the loop as we have gone through all cells
     			keyExists = false;
     			break;
     		}
+    		*/
     	}
     	
     	if (keyExists) {						// if keyExists then make the value at that key = -1 (removed), else do nothing
-        	Table[hashValue] = -1; 				//set that key value to -1 (deleted or empty slot)
-    	} 
+        	Table[hashValue] = -1; 				// set that key value to -1 (deleted or empty slot)
+    	} else {
+    		return m;
+    	}
 
-        return i;							// return i as it equals the number of collisions 
+        return i;								// return i as it equals the number of collisions 
     }
 
 }
