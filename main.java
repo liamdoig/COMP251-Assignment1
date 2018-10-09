@@ -99,13 +99,13 @@ public class main {
             //ADD YOUR CODE HERE
             int chainSum=0;
             for (int i=0; i < n; i++) {
-            	chainSum += MyChainTable.insertKey(keysToInsert[i]); //inserting keys into chain while keeping track of collisions sum
+            	chainSum += MyChainTable.insertKey(keysToInsert[i]); 		 //inserting keys into chain while keeping track of collisions sum
             }
             avColListChain.add((double) chainSum/n); 				 //adding to the end of the avColList
 
             int probeSum=0;
             for (int j=0; j < n; j++) {
-            	probeSum += MyProbeTable.insertKey(keysToInsert[j]); // inserting keys into probe table while tracking probe collisions
+            	probeSum += MyProbeTable.insertKey(keysToInsert[j]); 		 // inserting keys into probe table while tracking probe collisions
             }
             avColListProbe.add((double) probeSum/n);				 // adding to the end of avColListProbe
             
@@ -126,15 +126,15 @@ public class main {
             205, 186, 107, 179};
 
         //ADD YOUR CODE HERE
-        Open_Addressing MyProbeTable2 = new Open_Addressing(w, 137); // initializing new probe table with seed = 137
+        Open_Addressing MyProbeTable2 = new Open_Addressing(w, 137); 		// initializing new probe table with seed = 137
         int n = 16;
         
-        for (int i=0; i < n; i++) {									 // inserting keys 
+        for (int i=0; i < n; i++) {						// inserting keys 
             MyProbeTable2.insertKey(keysToInsert[i]);
         }
         
-        for (int i=0; i < n; i++) {									 // removing keys 
-        	removeIndex.add((double) i);							 // storing remove index and the key to be removed
+        for (int i=0; i < n; i++) {						// removing keys 
+        	removeIndex.add((double) i);					// storing remove index and the key to be removed
         	removeCollisions.add((double) MyProbeTable2.removeKey(keysToRemove[i])); 
         }
         
@@ -159,10 +159,10 @@ public class main {
         int[] randomKeys = new int[25];
         for (int j=0; j < randomKeys.length; j++) {
         	
-        	int randomKey = generateRandom(0,55,-1);						// generate random key between 0 and 55
+        	int randomKey = generateRandom(0,55,-1);			 // generate random key between 0 and 55
         	
-        	while (keyExists(randomKey, randomKeys)) {						// while the key already is in the randomKeys array
-        		randomKey = generateRandom(0,55,-1);						// generate a new random key
+        	while (keyExists(randomKey, randomKeys)) {			 // while the key already is in the randomKeys array
+        		randomKey = generateRandom(0,55,-1);			 // generate a new random key
         	}
         	randomKeys[j] = randomKey;
         }
@@ -175,31 +175,31 @@ public class main {
             int chainColSum = 0, probeColSum = 0, avgChainSum = 0, avgProbeSum = 0;
         	
             w += i;																// adjust w - this affects the load factor which is then displayed upon the x-axis of the graph
-        	Chaining wTable = new Chaining(w,-1);								// creating table to calculate alpha with.
+        	Chaining wTable = new Chaining(w,-1);				 // creating table to calculate alpha with.
 
             //TODO: "you will need to execute 10 simulations for each value of w to obtain representative averages" 
             int simulation = 0;
             while (simulation <= 10) {
             	// do 10 simulations and get averages of each
-            	Chaining MyChainTable3 = new Chaining(w, -1);					// initializing new chain table with w and random seed
-                for (int j=0; j < randomKeys.length; j++) {						// insert the randomKeys + get the sum 
+            	Chaining MyChainTable3 = new Chaining(w, -1);			 // initializing new chain table with w and random seed
+                for (int j=0; j < randomKeys.length; j++) {			 // insert the randomKeys + get the sum 
                 	chainColSum += MyChainTable3.insertKey(randomKeys[j]);
                 }
-                avgChainSum += (chainColSum/randomKeys.length);					// sum Average collisions for each set of insert
+                avgChainSum += (chainColSum/randomKeys.length);			 // sum Average collisions for each set of insert
             	
-                Open_Addressing MyProbeTable3 = new Open_Addressing(w,-1);		// initializing new probe table with w and random seed
-            	for (int j=0; j < randomKeys.length; j++) {						// inserting random keys into probe table + getting the collisions sum
+                Open_Addressing MyProbeTable3 = new Open_Addressing(w,-1);	 // initializing new probe table with w and random seed
+            	for (int j=0; j < randomKeys.length; j++) {			 // inserting random keys into probe table + getting the collisions sum
             		probeColSum += MyProbeTable3.insertKey(randomKeys[j]);
             	}
-            	avgProbeSum += (probeColSum / randomKeys.length);				// sum the average of the probe collisions for each table inserts
+            	avgProbeSum += (probeColSum / randomKeys.length);	   	 // sum the average of the probe collisions for each table inserts
                 
                 simulation++;
             }
         	
-            avColListChain2.add((double) avgChainSum/10);						// adding the average of average collisions to the list
-        	avColListProbe2.add((double) avgProbeSum/10);						// adding the average of average collisions to the list
+            avColListChain2.add((double) avgChainSum/10);			 // adding the average of average collisions to the list
+        	avColListProbe2.add((double) avgProbeSum/10);			 // adding the average of average collisions to the list
 
-			alphaList2.add((double) randomKeys.length/wTable.m); 				// adding to the alpha list ( # of keys inserted / # of slots(m) )
+			alphaList2.add((double) randomKeys.length/wTable.m); 	 // adding to the alpha list ( # of keys inserted / # of slots(m) )
         } 
         
         generateCSVOutputFile("w_comparison.csv", alphaList2, avColListChain2, avColListProbe2);
