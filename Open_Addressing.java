@@ -47,36 +47,35 @@ public class Open_Addressing {
      * encountered
      */
     public int insertKey(int key) {
-        //ADD YOUR CODE HERE (CHANGE THE RETURN STATEMENT)
-    	int i = 0; 							// the number of collisions and 'i' is initialized for probe function
+    	int i = 0; 							    // the number of collisions and 'i' is initialized for probe function
     	
     	int hashValue = probe(key, i); 	
     	int ogHashValue = hashValue;
     	boolean tableFull = false;
     	
-    	//TODO: disallow the ability to insert duplicate keys into the table 
-    	while (!isSlotEmpty(hashValue)) {	// check slot is empty, 
-    		i++;							// if it isn't, then increment i by 1
-    		hashValue = probe(key, i);		// and get a new HashValue 
+    	//TODO: disallow the ability to insert duplicate keys into the table... 
+    	while (!isSlotEmpty(hashValue)) {	    // check slot is empty, 
+    		i++;							    // if it isn't, then increment i by 1
+    		hashValue = probe(key, i);		    // and get a new HashValue 
     		
     		if (i >= m) {
     			tableFull = true;
     			break;
     		}
     		/*
-    		if (hashValue == ogHashValue) { // if the hashValue = to the Original Hash Value then we have gone through the whole table, 
-    			tableFull = true;			// so the table is full
-    			break;						// so break out of loop
+    		if (hashValue == ogHashValue) {     // if the hashValue = to the Original Hash Value then we have gone through the whole table, 
+    			tableFull = true;			    // so the table is full
+    			break;						    // so break out of loop
     		}
     		*/
     	}
-    	if (!tableFull) { 					// if table had space, then insert, else do not insert
-        	Table[hashValue] = key; 		// insert key into table with index hashValue
+    	if (!tableFull) { 					    // if table had space, then insert, else do not insert
+        	Table[hashValue] = key; 		    // insert key into table with index hashValue
     	} else {
     		return m;
     	}
 
-        return i;							// return i as it equals the number of collisions 
+        return i;							    // return i as it equals the number of collisions 
     }
 
     /**
@@ -84,23 +83,22 @@ public class Open_Addressing {
      * encountered
      */
     public int removeKey(int key) {
-        //ADD YOUR CODE HERE (CHANGE THE RETURN STATEMENT)
-    	int i = 0; 							// the number of collisions 
+    	int i = 0; 							    // the number of collisions 
     	
-    	int hashValue = probe(key, i); 		// get the original hashValue
-    	int ogHashValue = hashValue;		// copy of the original hashValue 
+    	int hashValue = probe(key, i); 		    // get the original hashValue
+    	int ogHashValue = hashValue;		    // copy of the original hashValue 
     	boolean keyExists = true;
     
-    	while (Table[hashValue] != key) {	// check if the key at Table[hashValue] is the right key we want to delete
-    		i++;							// if it isn't, then increment i by 1
-    		hashValue = probe(key, i);		// and get a new HashValue to try again!  
+    	while (Table[hashValue] != key) {	    // check if the key at Table[hashValue] is the right key we want to delete
+    		i++;							    // if it isn't, then increment i by 1
+    		hashValue = probe(key, i);		    // and get a new HashValue to try again!  
     		
     		if (i >= m) {
     			keyExists = false;
     			break;
     		}
     		/*
-    		if (hashValue == ogHashValue) { // if current hashValue == ogHashValue then break out of the loop as we have gone through all cells
+    		if (hashValue == ogHashValue) {     // if current hashValue == ogHashValue then break out of the loop as we have gone through all cells
     			keyExists = false;
     			break;
     		}
